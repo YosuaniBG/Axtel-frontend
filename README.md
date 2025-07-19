@@ -58,3 +58,8 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 # Axtel-frontend
+
+<img width="1908" height="862" alt="Screenshot 2025-07-19 102437" src="https://github.com/user-attachments/assets/fab8a816-8871-4dd2-8e2e-95d2e3abcf55" />
+
+<img width="1920" height="1337" alt="screencapture-localhost-4200-2025-07-19-10_24_45" src="https://github.com/user-attachments/assets/175997ea-4594-4624-9540-c026c8d9e3d0" />
+
