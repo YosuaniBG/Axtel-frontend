@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+*{
+    font-family: "Roboto";
+    font-size: 14px;
+}
+
+body{
+    background-color: #f8fafc;
+}
+
+.p-button{
+    background: black !important;
+    border-color: black !important;
+}
+
+button.p-button[severity="info"]{
+    background: rgb(93, 233, 151) !important;
+}

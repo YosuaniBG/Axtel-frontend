@@ -1,0 +1,50 @@
+.section_table {
+    padding: 4rem 5rem 2rem;
+}
+
+.card {
+    margin: 20px 0px;
+    padding: 17px 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    background-color: white;
+}
+
+.header h1 {
+    font-size: 30px;
+    color: #334155;
+    margin-bottom: 30px;
+}
+
+.header h2 {
+    font-size: 25px;
+    color: #5f6b7c;
+    margin-bottom: 30px;
+}
+
+.empty_data {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    color: #8f97a1;
+    font-weight: 500;
+}
+
+.load_btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.section_summary {
+    padding: 0rem 5rem;
+}
+
+@media (max-width: 600px) {
+    .section_summary {
+        padding: 0rem 1rem;
+    }
+
+    .section_table {
+        padding: 3rem 1rem 1rem;
+    }
+}

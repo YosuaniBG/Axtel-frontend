@@ -1,0 +1,193 @@
+<section class="section_table">
+  <p-toast />
+  <div class="header text-center">
+    <h1>Reporte de Ventas - AXTEL TEST</h1>
+  </div>
+  <div class="load_btn">
+    <p-fileupload mode="basic" name="demo[]" chooseIcon="pi pi-upload"
+      url="https://www.primefaces.org/cdn/api/upload.php" accept=".csv,text/csv" maxFileSize="1000000"
+      (onUpload)="onUploadFile($event)" [auto]="true" chooseLabel="Cargar CSV" />
+    <p-button label="Exportar" icon="pi pi-file-excel" iconPos="right" [disabled]="sales.length == 0"
+      [style]="{'background': 'rgb(93, 233, 151)', 'border': 'none', 'color': 'white'}" (onClick)="exportToCSV()" />
+  </div>
+  <div class="card">
+    @if (sales.length == 0) {
+    @if (loading) {
+    <p-table [value]="skeletonList" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID_Venta</th>
+          <th>Fecha</th>
+          <th>Monto</th>
+          <th>Moneda</th>
+          <th>País</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+        </tr>
+      </ng-template>
+    </p-table>
+    }
+    @else {
+    <span class="empty_data">No hay datos cargados aún</span>
+    }
+    }@else {
+    @if (normalizing) {
+    @if (loading) {
+    <p-table [value]="skeletonList" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID_Venta</th>
+          <th>Fecha</th>
+          <th>Monto</th>
+          <th>Moneda</th>
+          <th>Monto_Normalizado</th>
+          <th>Moneda_Normalizada</th>
+          <th>Tasa_Cambio</th>
+          <th>País</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+        </tr>
+      </ng-template>
+    </p-table>
+    }@else {
+    <p-table [value]="sales" stripedRows [tableStyle]="{'min-width': '30px'}">
+      <ng-template #header>
+        <tr>
+          <th style="width:10%">ID_Venta</th>
+          <th style="width:10%">Fecha</th>
+          <th style="width:10%">Monto</th>
+          <th style="width:10%">Moneda</th>
+          <th style="width:10%">Monto_Normalizado</th>
+          <th style="width:10%">Moneda_Normalizada</th>
+          <th style="width:10%">Tasa_Cambio</th>
+          <th style="width:10%">País</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-product>
+        <tr>
+          <td>{{product.ID_Venta}}</td>
+          <td class="text-left">{{product.Fecha}}</td>
+          <td class="text-left">{{product.Monto | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td class="text-left">{{product.Moneda}}</td>
+          <td class="text-left bg-green-100 font-medium">{{product.Monto_Normalizado | currency:'USD':'symbol':'1.2-2'}}
+          </td>
+          <td class="text-left bg-green-100 font-medium">{{product.Moneda_Normalizada}}</td>
+          <td class="text-left bg-green-100 font-medium">{{product.Tasa_De_Cambio | currency:'USD':'symbol':'1.2-6'}}
+          </td>
+          <td class="text-left">{{product['País']}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    }
+    }@else {
+    <p-table [value]="sales" stripedRows [tableStyle]="{'min-width': '50rem'}">
+      <ng-template #header>
+        <tr>
+          <th>ID_Venta</th>
+          <th>Fecha</th>
+          <th>Monto</th>
+          <th>Moneda</th>
+          <th>País</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-product>
+        <tr>
+          <td>{{product.ID_Venta}}</td>
+          <td>{{product.Fecha}}</td>
+          <td>{{product.Monto | currency:'USD':'symbol':'1.2-2'}}</td>
+          <td>{{product.Moneda}}</td>
+          <td>{{product['País']}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    }
+    }
+  </div>
+  <p-dialog header="Monedas Diferentes" [modal]="true" [closable]="false" [(visible)]="visible"
+    [style]="{ width: '25rem' }">
+    <span>
+      <p class="line-height-2">
+        Se han detectado monedas diferentes en el archivo cargado.
+        Por favor, ten en cuenta que todos los montos serán convertidos y normalizados a <strong>USD</strong> para su
+        correcto análisis.
+      </p>
+      <p>
+        Esto puede afectar los valores mostrados si las tasas de cambio varían.
+      </p>
+    </span>
+    <div class="flex justify-content-end gap-2 mt-4">
+      <p-button label="Normalizar datos" (click)="normalizer()" />
+    </div>
+  </p-dialog>
+</section>
+<section class="section_summary">
+  <div class="header text-center">
+    <h2>Resumen de ventas</h2>
+  </div>
+  <div class="grid">
+    <div class="col-12 md:col-6 lg:col-2">
+      <div class="card">
+        @if (sales.length == 0 || !normalized) {
+          <span class="empty_data">No hay datos cargados aún</span>
+        }@else {
+          <p-table [value]="salesSummary" stripedRows [tableStyle]="{'min-width': '5rem'}">
+            <ng-template pTemplate="caption">
+              <h2 class="text-2xl">Total de ventas/paises </h2>
+            </ng-template>
+            <ng-template #header>
+              <tr>
+                <th>País</th>
+                <th>Ventas</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-sale>
+              <tr>
+                <td>
+                  <div class="flex align-items-center gap-2">
+                    <img [src]="getFlagUrl(sale.Pais)" alt="flag" width="25" height="18"> {{sale.Pais}}
+                  </div>
+                </td>
+                <td>{{sale.Total_Ventas_USD | currency:'USD':'symbol':'1.2-2'}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        }
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-5">
+      <div class="card">
+         @if (sales.length == 0 || !normalized) {
+          <span class="empty_data">No hay datos cargados aún</span>
+        }@else {
+          <p-chart type="bar" [data]="basicData" [options]="basicOptions" [style]="{ width: '100%', 'min-height': '300px' }"/>
+        }
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-5">
+      <div class="card">
+         @if (sales.length == 0 || !normalized) {
+          <span class="empty_data">No hay datos cargados aún</span>
+        }@else {
+          <p-chart type="line" [data]="data" [options]="options" [style]="{ width: '100%', height: '300px' }" />
+        }
+      </div>
+    </div>
+  </div>
+</section>
